@@ -4,6 +4,9 @@ import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.logging.Level;
 
 public class FileIO {
@@ -96,17 +99,16 @@ public class FileIO {
                 // 该停就停
                 if (App.closing) break;
             }
+            fileOUT.close();
             if (inProgress == inSize) {
                 // 表示接收完成
                 // 改名
-                file.renameTo(new File(Config.output_file_path + inFileName));
+                Files.move(file.toPath(),Paths.get(Config.output_file_path + inFileName));
                 Main.logger.log(Level.INFO, "[客户端]文件接收完成: " + inFileName);
             } else {
                 Main.warning("[客户端]文件接收中断!");
             }
-
             isInEnd.set(true);
-            fileOUT.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
