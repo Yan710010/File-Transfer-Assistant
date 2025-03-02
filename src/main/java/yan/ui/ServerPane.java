@@ -54,8 +54,11 @@ public class ServerPane extends Pane {
             Dragboard dragboard = event.getDragboard();
             // 判断类型
             if (dragboard.hasFiles()) {
-                // 如果是文件则设置为文件路径
-                fileArea.setText(dragboard.getFiles().getFirst().getPath());
+                // 如果是文件则添加至面板
+                StringBuilder text = new StringBuilder(fileArea.getText());
+                if (!text.isEmpty() && !text.toString().endsWith("\n")) text.append("\n");
+                for (File f : dragboard.getFiles()) text.append(f.getPath()).append("\n");
+                fileArea.setText(text.toString());
             } else if (dragboard.getString() != null) {
                 fileArea.setText(dragboard.getString());
             }

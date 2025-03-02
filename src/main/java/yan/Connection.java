@@ -49,14 +49,17 @@ public class Connection {
                 // 持续检测
                 while (!isCancelled() && count_out < n_out) {
                     try {
-                        Thread.sleep(200);
+                        Thread.sleep(100);
                     } catch (InterruptedException e) {// 检查任务是否中断
                         if (isCancelled()) break;
                     }
                     updateProgress(FileIO.outProgress, FileIO.outSize);
-                    updateMessage(String.format("%-80s%s/s",
+                    // 刷新提示文字
+                    if (lastProgress > FileIO.outProgress) lastProgress = 0;
+                    updateMessage(String.format("%-80s%s/s\n当前正在发送文件: %s",
                             String.format("进度:%s/%s", Main.byteFormat(FileIO.outProgress), Main.byteFormat(FileIO.outSize)),
-                            Main.byteFormat((FileIO.outProgress - lastProgress) * 5))
+                            Main.byteFormat((FileIO.outProgress - lastProgress) * 10),
+                            FileIO.outFileName)
                     );
                     lastProgress = FileIO.outProgress;
                 }
@@ -155,16 +158,18 @@ public class Connection {
                 // 持续检测
                 while (!isCancelled() && count_in < n_in) {
                     try {
-                        Thread.sleep(200);
+                        Thread.sleep(100);
                     } catch (InterruptedException e) {
                         if (isCancelled()) break;
                     }
                     // 刷新进度
                     updateProgress(FileIO.inProgress, FileIO.inSize);
                     // 刷新进度信息
-                    updateMessage(String.format("%-80s%s/s",
+                    if (lastProgress > FileIO.inProgress) lastProgress = 0;
+                    updateMessage(String.format("%-80s%s/s\n当前正在接收文件: %s",
                             String.format("进度:%s/%s", Main.byteFormat(FileIO.inProgress), Main.byteFormat(FileIO.inSize)),
-                            Main.byteFormat((FileIO.inProgress - lastProgress) * 5)));
+                            Main.byteFormat((FileIO.inProgress - lastProgress) * 10),
+                            FileIO.inFileName));
                     lastProgress = FileIO.inProgress;
                 }
                 updateProgress(FileIO.inProgress, FileIO.inSize);
