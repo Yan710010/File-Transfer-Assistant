@@ -36,6 +36,8 @@ public class App extends javafx.application.Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        // 窗口基础
+        primaryStage.setTitle("文件传输助手");
         // 添加组件
         // 为整个页面布局的面板
         AnchorPane anchorPane = new AnchorPane();

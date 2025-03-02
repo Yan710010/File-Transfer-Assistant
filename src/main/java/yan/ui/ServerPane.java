@@ -16,6 +16,7 @@ import javafx.stage.FileChooser;
 import javafx.util.Duration;
 import yan.Config;
 import yan.Connection;
+import yan.Main;
 
 import java.io.File;
 import java.net.InetAddress;
@@ -159,7 +160,7 @@ public class ServerPane extends Pane {
             tt.setAutoReverse(true);
             tt.play();
             try {
-                InetAddress address = InetAddress.getLocalHost();
+                InetAddress address = Main.getLocalHostLANAddress();
                 ipLabel.setText(String.format("主机名称: %-40s IP地址: %s", address.getHostName(), address.getHostAddress()));
             } catch (UnknownHostException e) {
                 ipLabel.setText("无法获取ip地址,请检查网络连接");
