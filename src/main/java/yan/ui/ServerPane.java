@@ -164,7 +164,7 @@ public class ServerPane extends Pane {
             tt.play();
             try {
                 InetAddress address = Main.getLocalHostLANAddress();
-                ipLabel.setText(String.format("主机名称: %-40s IP地址: %s", address.getHostName(), address.getHostAddress()));
+                ipLabel.setText(String.format("IP地址: %s", address.getHostAddress()));
             } catch (UnknownHostException e) {
                 ipLabel.setText("无法获取ip地址,请检查网络连接");
             }

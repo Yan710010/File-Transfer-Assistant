@@ -72,7 +72,7 @@ public class FileIO {
         try {
             isInEnd.set(false);
             // 在有数据前等待
-            while (dataIN.available() == 0);
+            while (dataIN.available() == 0) ;
             // 接收文件名
             inFileName = dataIN.readUTF();
             // 接收长度
@@ -92,7 +92,6 @@ public class FileIO {
             inProgress = 0;
             while (inProgress < inSize) {
                 length = inSize - inProgress > 1024 ? 1024 : (int) (inSize - inProgress);
-                if (dataIN.read(bytes, 0, length) != length) break;
                 fileOUT.write(bytes, 0, length);
                 inProgress += length;
                 fileOUT.flush();
@@ -103,10 +102,13 @@ public class FileIO {
             if (inProgress == inSize) {
                 // 表示接收完成
                 // 改名
-                Files.move(file.toPath(),Paths.get(Config.output_file_path + inFileName));
+                // 检查是否已存在
+                File toFile = new File(Config.output_file_path + inFileName);
+                if (toFile.exists()) toFile.delete();// 如果文件已经存在则删除
+                Files.move(file.toPath(), Paths.get(Config.output_file_path + inFileName));
                 Main.logger.log(Level.INFO, "[客户端]文件接收完成: " + inFileName);
             } else {
-                Main.warning("[客户端]文件接收中断!");
+                Main.warning("[客户端]文件接收中断! 进度:" + inProgress + "/" + inSize);
             }
             isInEnd.set(true);
         } catch (IOException e) {
