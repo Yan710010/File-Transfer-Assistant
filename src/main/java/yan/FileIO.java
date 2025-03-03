@@ -92,6 +92,8 @@ public class FileIO {
             inProgress = 0;
             while (inProgress < inSize) {
                 length = inSize - inProgress > 1024 ? 1024 : (int) (inSize - inProgress);
+                length = dataIN.read(bytes, 0, length);
+                if (length == -1) break;// 数据流结束
                 fileOUT.write(bytes, 0, length);
                 inProgress += length;
                 fileOUT.flush();
